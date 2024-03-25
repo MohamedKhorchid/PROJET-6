@@ -114,6 +114,10 @@ function createProjectsModal() {
 
     
 ////////////////deuxieme modal//////////////////////////////////////////
+
+/**
+ * Qu'es-ce que ça fais ?
+ */
 function createFormModal() {
     const chooseCategory = fetch("http://localhost:5678/api/categories")
     .then((response) => response.json())

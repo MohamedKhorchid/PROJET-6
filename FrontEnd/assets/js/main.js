@@ -1,5 +1,6 @@
 //////////////////////////////////////RECUPERATION DES TRAVAUX DE L'ARCHITECTE///////////////////////////////
 
+
 //fetch permet de récuprer les travaux de l'architecte
 fetch("http://localhost:5678/api/works")//lien vers l'emplacement des travaux en back-end via l'API
     .then((response) => response.json())//après récupération, on précise la nature de la réponse reçue
@@ -16,19 +17,13 @@ fetch("http://localhost:5678/api/works")//lien vers l'emplacement des travaux en
 const portfolioGallery = document.querySelector(".gallery");
 
 
-/*cette fonction permet de créer le tableau en utilisant les valeurs que l'on a récupéré avec fetch(), 
-en se basant sur la structure initiale qu'on avait en HTML*/
+/*
+ * cette fonction permet de créer le tableau en utilisant les valeurs que l'on a récupéré avec fetch(), 
+ * en se basant sur la structure initiale qu'on avait en HTML
+ */
 function createFigureArray(works) {
     //déclaration de variables qui ne pourront être utilisées que dans la fonction
     const figure = document.createElement("figure");//création de la balise figure qui contiendra l'image et le sous-titre
-
-    /*
-figure.innerHTML = `
-    <img src="${works.imageUrl}" alt="${works.title}" />
-    <figcaption>Mon nom</figcaption>    
-`
-*/
-
     const figCaption = document.createElement("figcaption");//création de la balise figcaption qui contiendra le sous-titre
     const figImage = document.createElement("img");//création de la balise img qui contiendra les images
 
@@ -42,7 +37,7 @@ figure.innerHTML = `
     figure.appendChild(figImage);//placement de l'image comme premier enfant de la balise figure
     figure.appendChild(figCaption);//placement de la description comme deuxième enfants de la balise figure
 
-    return figure;//affiche la balise figure sous sa forme finale, une fois complétée
+    return figure;
 }
 
 
@@ -80,18 +75,15 @@ function createFilters(filter) {
         fetch("http://localhost:5678/api/works")
             .then((response) => response.json())
             .then((data) => {
-                data.forEach((works) => {
-                    const figure = createFigureArray(works);
-                    portfolioGallery.appendChild(figure);
+                data.forEach((work) => {
 
-                    const buttonFilterId = buttonFilter.getAttribute("id");
-                    const figureCategoryId = figure.getAttribute("category-id");
+                    //const buttonFilterId = buttonFilter.getAttribute("id"); // id_A du bouton catégorie
+                    const figureCategoryId = work.categoryId; // id_B du projet dans la boucle foreach
 
-                    if (buttonFilterId === figureCategoryId) {
-                        figure.style.display = "block"
-                    } else {
-                        figure.style.display = "none"
-                    }
+                    if (filter.id === figureCategoryId) { // si id_A === id_B alors on créer l'affichage du projet
+                        const figure = createFigureArray(work);
+                        portfolioGallery.appendChild(figure);
+                    } 
                 });
             })
             .catch((error) => console.log("erreur"));
