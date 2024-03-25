@@ -1,4 +1,3 @@
-
 const formLogin = document.querySelector('#loginForm')
 const inputPassword = document.querySelector('#input__password');
 const inputEmail = document.querySelector("#input__mail");
@@ -11,32 +10,21 @@ errorPassword.style.visibility = "hidden";
 
 
 
-/**
- * Evènement de la soumission du formulaire
- * Attention, par défaut la soumission = changement de page
- */
 formLogin.addEventListener('submit', (event) => {
-    event.preventDefault(); // Empêche le comportement par default soit le rechargement de la page
+    event.preventDefault();
 
-    // Récupération des valeurs du formulaire
     const password = inputPassword.value;
     const email = inputEmail.value;
-    
-    /*let regex = new RegExp("^[a-z]$")
-    let resultat = regex.test(password)*/
 
     let errorsFound = false;
 
-    //Vérification du mail
     if(email === ''){
-        // Affichage d'un message d'erreur concernant l'email
         errorsFound = true;
         errorMail.style.visibility = "visible";
     }
 
-    // Vérification du mot de passe
+
     if(password === ''){
-        // Affiche d'un message d'erreur concernant le mot passe
         errorsFound = true;
         errorPassword.style.visibility = "visible";
     }
@@ -63,7 +51,6 @@ formLogin.addEventListener('submit', (event) => {
             } else {
                 location.href = "./index.html"
             }
-            // Redirection vers la page d'accueil
         })
     }
 })

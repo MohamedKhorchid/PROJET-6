@@ -1,22 +1,24 @@
-
-const token = localStorage.getItem('token') // Récupération
+const token = localStorage.getItem('token') 
 
 
 if(token){
-////////////premiere modale////////////////////
-const btnModalProjects = document.querySelector('#btnModalProjects')
-btnModalProjects.addEventListener('click', () => {
-    createProjectsModal()
-})
+    const btnModalProjects = document.querySelector('#btnModalProjects')
+    btnModalProjects.addEventListener('click', () => {
+        createProjectsModal()
+    })
 
 
-const btnModalAcess = document.querySelector(".admin__modal__acess")
-btnModalAcess.addEventListener('click', () => {
-    createProjectsModal()
-})
+    const btnModalAcess = document.querySelector(".admin__modal__acess")
+    btnModalAcess.addEventListener('click', () => {
+        createProjectsModal()
+    })
+}
 
 
-
+/**
+ * Cette fonction permet de remplir la première modale avec les projets, de créer une corbeille sur chacun de projets et de permettre
+ * la suppression d'un projet au clic sur la corbeille.
+ */
 function fillModalWithProjects() {
     fetch("http://localhost:5678/api/works")
     .then((response) => response.json())
@@ -57,25 +59,16 @@ function fillModalWithProjects() {
                     console.log(error);
                 })
             })
-
-            
-       
-
-            // Mettre le listener pour supprimer un projet
-            // Route sécurisé => donc on dois envoyer le token
-            /*
-            fetch(`http://localhost:5678/api/works/${work.id}`, {
-                method: 'DELETE',
-                headers: {Authorization: `Bearer ${token}`}
-            })
-            .then(resp => resp.json())
-               */
         });
     })
-    .catch((error) => console.log("erreur"));//autrement, afficher une erreur
+    .catch((error) => console.log("erreur"));
 }
 
-            
+    
+/**
+ * Cette fonction permet de créer la structure de la première modale qui affiche les projets et permet la suppression ainsi que la
+ * redirection vers la deuxième modale.
+ */
 function createProjectsModal() {
     const modal = document.createElement('div')
     modal.classList.add('modal')
@@ -104,19 +97,8 @@ function createProjectsModal() {
 
 
 
-
-
-
-
-
-
-
-
-    
-////////////////deuxieme modal//////////////////////////////////////////
-
 /**
- * Qu'es-ce que ça fais ?
+ * Cette fonction créé la structure de la deuxième modale qui permet d'ajouter un nouveau projet.
  */
 function createFormModal() {
     const chooseCategory = fetch("http://localhost:5678/api/categories")
@@ -142,8 +124,8 @@ function createFormModal() {
         <h2 class="modal__title">Ajout photo</h2>
         <div class="project__preview">
 
-            <i class="fa-regular fa-image fa-2xl"></i>
-            <input type="file" accept="image/*" id="load__image" class="input__load__image">
+            <img id="output"/>
+            <input type="file" accept="image/*" id="load__image" class="input__load__image" onchange="loadFile(event)>
             <label for="load__image" class="modal__input__text">+ Ajouter photo </label>
             <p class="modal__input__size">jpg, png : 4mo max </p>
 
@@ -219,31 +201,17 @@ function createFormModal() {
 
     })
 
-}
-
-
-
-/*
-
-TODO : 
-- Terminer l'affichage de la première modal (avec projets)
-- Terminer l'affichage de la seconde modale (avec formulaire + preview + les catégories (select) proviennent du serveur)
-    -- Si tout est ok on fait le fetch pour créer un projet
-    -- si l'un des champs est vide (title, catégorie, image) alors on affiche une erreur
-
-<input type="file" accept="image/*" onchange="loadFile(event)">
-<img id="output"/>
-<script>
-  var loadFile = function(event) {
-    var reader = new FileReader();
+let loadFile = function(event) {
+    let reader = new FileReader();
     reader.onload = function(){
-      var output = document.getElementById('output');
+      let output = document.getElementById('output');
       output.src = reader.result;
     };
     reader.readAsDataURL(event.target.files[0]);
   };
-</script>
-
- */
 
 }
+
+
+
+

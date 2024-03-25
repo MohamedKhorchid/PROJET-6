@@ -1,41 +1,36 @@
 //////////////////////////////////////RECUPERATION DES TRAVAUX DE L'ARCHITECTE///////////////////////////////
-
-
-//fetch permet de récuprer les travaux de l'architecte
-fetch("http://localhost:5678/api/works")//lien vers l'emplacement des travaux en back-end via l'API
-    .then((response) => response.json())//après récupération, on précise la nature de la réponse reçue
-    .then((data) => { //ensuite on indique quoi faire des données
-        data.forEach((works) => { //pour chaque données, lancer la fonction "works" qui lance les instructions suivantes :
-            const createFigure = createFigureArray(works);// récupérer la balise figure que l'on a crée plus haut
-            portfolioGallery.appendChild(createFigure);// ajouter cette balise en tant qu'enfant de la div gallery
+fetch("http://localhost:5678/api/works")
+    .then((response) => response.json())
+    .then((data) => { 
+        data.forEach((works) => { 
+            const createFigure = createFigureArray(works);
+            portfolioGallery.appendChild(createFigure);
         });
     })
-    .catch((error) => console.log("erreur"));//autrement, afficher une erreur
+    .catch((error) => console.log("erreur"));
 
 
-//cette variable permet de récupérer la div gallery que l'on a déjà en HTML
+
 const portfolioGallery = document.querySelector(".gallery");
 
 
-/*
- * cette fonction permet de créer le tableau en utilisant les valeurs que l'on a récupéré avec fetch(), 
- * en se basant sur la structure initiale qu'on avait en HTML
+/**
+ * Cette fontion permet de créer un projet (une figure) pour chacune des données du tableau "works"
  */
 function createFigureArray(works) {
-    //déclaration de variables qui ne pourront être utilisées que dans la fonction
-    const figure = document.createElement("figure");//création de la balise figure qui contiendra l'image et le sous-titre
-    const figCaption = document.createElement("figcaption");//création de la balise figcaption qui contiendra le sous-titre
-    const figImage = document.createElement("img");//création de la balise img qui contiendra les images
+    const figure = document.createElement("figure");
+    const figCaption = document.createElement("figcaption");
+    const figImage = document.createElement("img");
 
-    figImage.setAttribute("src", works.imageUrl);//création d'un attribut source pour chaque image, 
-    figImage.setAttribute("alt", works.title);//création d'un attribut alt pour chaque image
-    figCaption.innerHTML = works.title;//création du texte sous-titre des photos
-    figure.setAttribute("data-id", works.id);//création d'un attribut data-id pour chaque figure
-    figure.setAttribute("category-id", works.categoryId);//création d'un attribut category-id pour chaque figure
+    figImage.setAttribute("src", works.imageUrl);
+    figImage.setAttribute("alt", works.title);
+    figCaption.innerHTML = works.title;
+    figure.setAttribute("data-id", works.id);
+    figure.setAttribute("category-id", works.categoryId);
     figure.classList.add("figure__project");
 
-    figure.appendChild(figImage);//placement de l'image comme premier enfant de la balise figure
-    figure.appendChild(figCaption);//placement de la description comme deuxième enfants de la balise figure
+    figure.appendChild(figImage);
+    figure.appendChild(figCaption);
 
     return figure;
 }
@@ -50,8 +45,6 @@ const categoriesDiv = document.querySelector('.categories');
 
 
 //////////////////////CREATION DES FILTRES POUR TRIER LES TRAVAUX DE L'ARCHITECTE/////////////////
-
-//fetch permet de récupérer les catégories pour trier les travaux de l'architecte
 fetch("http://localhost:5678/api/categories")
     .then((response) => response.json())
     .then((categories) => {
@@ -62,8 +55,11 @@ fetch("http://localhost:5678/api/categories")
     .catch((error) => console.log("erreur"));
 
 
-function createFilters(filter) {
 
+/**
+ * Cette fonction créé un bouton pour chacune des données du tableau "filter". Au clic sur un bouton, un filtrage des projets a lieu.
+ */
+function createFilters(filter) {
     const buttonFilter = document.createElement("button");
     buttonFilter.classList.add("categories__filter__style");
     buttonFilter.setAttribute("id", filter.id);
@@ -94,6 +90,10 @@ function createFilters(filter) {
     return buttonFilter;
 }
 
+
+/**
+ * Cette fonction créé un bouton qui affiche tous les projets au clic.
+ */
 function showAll() {
     const allButtonFilter = document.createElement("button")
     allButtonFilter.classList.add("categories__filter__style")
@@ -114,7 +114,7 @@ function showAll() {
             portfolioGallery.innerHTML = "";
     })
 }
-showAll()/**J'appel la fonction que je viens de créer pour faire apparitre le bouton créer en js pour afficher toute les figures*/
+showAll()
 
 
 const getToken =  localStorage.getItem('token')
@@ -144,15 +144,3 @@ const loginButton = document.querySelector(".login__button")
         })
     }
 
-
-
-
-/**
- * Quand je clique sur un bouton de filtre : 
- * --- Je vais chercher toutes les projets 
- * --- Je les parcours et ne garde que ceux qui on le bon categoryId
- * --- J'affiche tous les projets que j'ai sélectionné (bien penser à réinitialiser la div gallery => portfolioGallery.innerHTML = '')
- */
-/*
-const chaine = "cachalot"
-let regex = new RegExp ("a-z")*/
