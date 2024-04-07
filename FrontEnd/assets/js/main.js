@@ -1,8 +1,8 @@
 //////////////////////////////////////RECUPERATION DES TRAVAUX DE L'ARCHITECTE///////////////////////////////
 fetch("http://localhost:5678/api/works")
     .then((response) => response.json())
-    .then((data) => { 
-        data.forEach((works) => { 
+    .then((data) => {
+        data.forEach((works) => {
             const createFigure = createFigureArray(works);
             portfolioGallery.appendChild(createFigure);
         });
@@ -79,7 +79,7 @@ function createFilters(filter) {
                     if (filter.id === figureCategoryId) { // si id_A === id_B alors on créer l'affichage du projet
                         const figure = createFigureArray(work);
                         portfolioGallery.appendChild(figure);
-                    } 
+                    }
                 });
             })
             .catch((error) => console.log("erreur"));
@@ -111,36 +111,36 @@ function showAll() {
                 });
             })
             .catch((error) => console.log("erreur"));/*si erreur afficher erreur sur la consol(f12)*/
-            portfolioGallery.innerHTML = "";
+        portfolioGallery.innerHTML = "";
     })
 }
 showAll()
 
 
-const getToken =  localStorage.getItem('token')
+const getToken = localStorage.getItem('token')
 const loginButton = document.querySelector(".login__button")
-    if (getToken){
-        const createBuutonModal = document.createElement("button")
-        createBuutonModal.setAttribute("id", "btnModalProjects")
-        createBuutonModal.classList.add("open__modal__button")
-        createBuutonModal.innerHTML=`<span class="admin__edition__access">
+if (getToken) {
+    const createBuutonModal = document.createElement("button")
+    createBuutonModal.setAttribute("id", "btnModalProjects")
+    createBuutonModal.classList.add("open__modal__button")
+    createBuutonModal.innerHTML = `<span class="admin__edition__access">
         <i class="fa-regular fa-pen-to-square"></i>
         Mode edition
         </span>`
-        const btnModalProjectsBox= document.querySelector(".btn__modal__projects__box")
-        btnModalProjectsBox.appendChild(createBuutonModal)
+    const btnModalProjectsBox = document.querySelector(".btn__modal__projects__box")
+    btnModalProjectsBox.appendChild(createBuutonModal)
 
 
-        const createSpanModal = document.createElement("span")
-        createSpanModal.classList.add("admin__modal__acess")
-        createSpanModal.innerHTML=`<i class="fa-regular fa-pen-to-square fa-square-h2"></i>
+    const createSpanModal = document.createElement("span")
+    createSpanModal.classList.add("admin__modal__acess")
+    createSpanModal.innerHTML = `<i class="fa-regular fa-pen-to-square fa-square-h2"></i>
         Modifier`
-        const portfolioH2 = document.querySelector("#portfolio h2")
-        portfolioH2.appendChild(createSpanModal)
+    const portfolioH2 = document.querySelector("#portfolio h2")
+    portfolioH2.appendChild(createSpanModal)
 
-        loginButton.innerHTML = "logout"
-        loginButton.addEventListener("click", () => {
-            localStorage.removeItem("token")
-        })
-    }
+    loginButton.innerHTML = "logout"
+    loginButton.addEventListener("click", () => {
+        localStorage.removeItem("token")
+    })
+}
 

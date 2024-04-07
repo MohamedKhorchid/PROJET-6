@@ -1,7 +1,7 @@
-const token = localStorage.getItem('token') 
+const token = localStorage.getItem('token')
 
 
-if(token){
+if (token) {
     const btnModalProjects = document.querySelector('#btnModalProjects')
     btnModalProjects.addEventListener('click', () => {
         createProjectsModal()
@@ -21,50 +21,50 @@ if(token){
  */
 function fillModalWithProjects() {
     fetch("http://localhost:5678/api/works")
-    .then((response) => response.json())
-    .then((data) => { 
-        const modalGalerie = document.querySelector('.modal__galerie')
+        .then((response) => response.json())
+        .then((data) => {
+            const modalGalerie = document.querySelector('.modal__galerie')
 
-        data.forEach((work) => { 
-            const newProject = document.createElement('figure')
-            newProject.classList.add('modal__figure')
-            newProject.setAttribute("data-id", work.id);
-            newProject.setAttribute("category-id", work.categoryId);
+            data.forEach((work) => {
+                const newProject = document.createElement('figure')
+                newProject.classList.add('modal__figure')
+                newProject.setAttribute("data-id", work.id);
+                newProject.setAttribute("category-id", work.categoryId);
 
-            const modalRemoveBox = document.createElement("div")
-            modalRemoveBox.classList.add("modal__remove__box")
-            modalRemoveBox.innerHTML=`<i class="fa-solid fa-trash-can fa-xs"><i>`
-            newProject.appendChild(modalRemoveBox)
+                const modalRemoveBox = document.createElement("div")
+                modalRemoveBox.classList.add("modal__remove__box")
+                modalRemoveBox.innerHTML = `<i class="fa-solid fa-trash-can fa-xs"><i>`
+                newProject.appendChild(modalRemoveBox)
 
-            const modalImage= document.createElement("img")
-            modalImage.classList.add("modal__image")
-            modalImage.setAttribute("src", work.imageUrl)
-            modalImage.setAttribute("alt", work.title)
-            newProject.appendChild(modalImage)
-            
-            modalGalerie.append(newProject)
+                const modalImage = document.createElement("img")
+                modalImage.classList.add("modal__image")
+                modalImage.setAttribute("src", work.imageUrl)
+                modalImage.setAttribute("alt", work.title)
+                newProject.appendChild(modalImage)
 
-            modalRemoveBox.addEventListener("click", () =>{
-                fetch(`http://localhost:5678/api/works/${work.id}`,{
-                    method:"DELETE",
-                    headers:{
-                        "Authorization": `Bearer ${token}`
-                    }
+                modalGalerie.append(newProject)
+
+                modalRemoveBox.addEventListener("click", () => {
+                    fetch(`http://localhost:5678/api/works/${work.id}`, {
+                        method: "DELETE",
+                        headers: {
+                            "Authorization": `Bearer ${token}`
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log("élément supprimé avec succès", data);
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        })
                 })
-                .then(response => response.json())
-                .then(data => {
-                    console.log("élément supprimé avec succès", data);
-                })
-                .catch(error => {
-                    console.log(error);
-                })
-            })
-        });
-    })
-    .catch((error) => console.log("erreur"));
+            });
+        })
+        .catch((error) => console.log("erreur"));
 }
 
-    
+
 /**
  * Cette fonction permet de créer la structure de la première modale qui affiche les projets et permet la suppression ainsi que la
  * redirection vers la deuxième modale.
@@ -77,9 +77,9 @@ function createProjectsModal() {
     <h2 class="modal__title">Galerie Photo</h2>
     <div class="modal__galerie"></div>
     <button class="next__modal__btn" id="btnNextModal">Ajouter une photo</button>
-    </div>`; 
-    
-    document.body.append(modal) 
+    </div>`;
+
+    document.body.append(modal)
 
     const btnClose = document.querySelector('#btnModalClose')
     btnClose.addEventListener('click', () => {
@@ -95,25 +95,39 @@ function createProjectsModal() {
     fillModalWithProjects()
 }
 
+let loadFile = function (event) {
+    let reader = new FileReader()
+    reader.onload = function () {
+        let output = document.getElementById('output')
+        output.setAttribute("src", reader.result)
 
+        const label = document.querySelector(".modal__input__text")
+        const inputSize = document.querySelector(".modal__input__size")
+        label.style.visibility = "hidden"
+        inputSize.style.visibility = "hidden"
+        output.style.width = "129px"
+        output.style.height = "100%"
+    }
+    reader.readAsDataURL(event.target.files[0])
+}
 
 /**
  * Cette fonction créé la structure de la deuxième modale qui permet d'ajouter un nouveau projet.
  */
 function createFormModal() {
     const chooseCategory = fetch("http://localhost:5678/api/categories")
-    .then((response) => response.json())
-    .then((categories) => {
-        categories.forEach((filter) => {
-          const selectCatgory = document.querySelector(".select__category")
+        .then((response) => response.json())
+        .then((categories) => {
+            categories.forEach((filter) => {
+                const selectCatgory = document.querySelector(".select__category")
 
-          const createOption = document.createElement("option")
-          createOption.setAttribute("value", filter.id)
-          createOption.innerHTML=filter.name
-          selectCatgory.appendChild(createOption)
-        });
-    })
-    .catch((error) => console.log("erreur"));
+                const createOption = document.createElement("option")
+                createOption.setAttribute("value", filter.id)
+                createOption.innerHTML = filter.name
+                selectCatgory.appendChild(createOption)
+            });
+        })
+        .catch((error) => console.log("erreur"));
 
 
     const modal = document.createElement('div')
@@ -124,8 +138,8 @@ function createFormModal() {
         <h2 class="modal__title">Ajout photo</h2>
         <div class="project__preview">
 
-            <img id="output"/>
-            <input type="file" accept="image/*" id="load__image" class="input__load__image" onchange="loadFile(event)>
+            <img src="../FrontEnd/assets/images/picture-svgrepo-com 1.jpg" id="output"/>
+            <input type="file" accept="image/*" id="load__image" class="input__load__image" onchange="loadFile(event)">
             <label for="load__image" class="modal__input__text">+ Ajouter photo </label>
             <p class="modal__input__size">jpg, png : 4mo max </p>
 
@@ -137,14 +151,13 @@ function createFormModal() {
             <label class="modal__form__label" for="modal__form__category">Categorie</label>
 
             <select id="modal__form__category" class="modal__form__input select__category">
-            <option value=""></option>
             ${chooseCategory}<!--je fais venir la variable qui permet d'afficher les catégorie du tableau en backend-->
             </select>
 
             <input type="submit" value="Valider" class="modal__form__submit">
         </form> 
 
-    </div>`; 
+    </div>`;
 
     document.body.append(modal)
 
@@ -169,11 +182,11 @@ function createFormModal() {
 
         const projectCategory = document.querySelector(".select__category")
         const projectCategoryValue = projectCategory.value
-        
+
 
         const projectImage = document.querySelector(".input__load__image")
         const projectImageValue = projectImage.files[0]
-        
+
 
         const formData = new FormData(modalForm)
         formData.append("title", projectTitleValue)
@@ -181,34 +194,25 @@ function createFormModal() {
         formData.append("image", projectImageValue)
 
         fetch("http://localhost:5678/api/works", {
-            method: "POST",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Accept": "application/json",
-            },
-            body: formData
-        })
-        .then((response => response.json()))
-        .then(works => {
-            const createFigure = createFigureArray(works)
-            const portfolioGallery = document.querySelector(".gallery")
-            portfolioGallery.appendChild(createFigure)
-            alert("Projet ajouté avec succès")
-        })
-        .catch(error => {
-            console.log("erreur", error);
-        })
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Accept": "application/json",
+                },
+                body: formData
+            })
+            .then((response => response.json()))
+            .then(works => {
+                const createFigure = createFigureArray(works)
+                const portfolioGallery = document.querySelector(".gallery")
+                portfolioGallery.appendChild(createFigure)
+                alert("Projet ajouté avec succès")
+            })
+            .catch(error => {
+                console.log("erreur", error);
+            })
 
     })
-
-let loadFile = function(event) {
-    let reader = new FileReader();
-    reader.onload = function(){
-      let output = document.getElementById('output');
-      output.src = reader.result;
-    };
-    reader.readAsDataURL(event.target.files[0]);
-  };
 
 }
 

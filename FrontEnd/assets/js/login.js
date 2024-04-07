@@ -2,11 +2,9 @@ const formLogin = document.querySelector('#loginForm')
 const inputPassword = document.querySelector('#input__password');
 const inputEmail = document.querySelector("#input__mail");
 
-const errorMail = document.querySelector("#inputEmailErrors");
-errorMail.style.visibility = "hidden";
 
-const errorPassword = document.querySelector("#inputPasswordErrors");
-errorPassword.style.visibility = "hidden";
+const errorPasswordEmailErrors = document.querySelector("#inputPasswordEmailErrors");
+errorPasswordEmailErrors.style.visibility = "hidden";
 
 
 
@@ -18,40 +16,40 @@ formLogin.addEventListener('submit', (event) => {
 
     let errorsFound = false;
 
-    if(email === ''){
+    if (email === '') {
         errorsFound = true;
-        errorMail.style.visibility = "visible";
+        errorPasswordEmailErrors.style.visibility = "visible";
     }
 
 
-    if(password === ''){
+    if (password === '') {
         errorsFound = true;
-        errorPassword.style.visibility = "visible";
+        errorPasswordEmailErrors.style.visibility = "visible";
     }
 
 
-    if(!errorsFound){
+    if (!errorsFound) {
         fetch("http://localhost:5678/api/users/login", {
-            method:"POST", 
-            headers:{
+            method: "POST",
+            headers: {
                 "Content-Type": "application/json"
-            },            
-            body:JSON.stringify({
-                "email" : email,
-                "password" : password
+            },
+            body: JSON.stringify({
+                "email": email,
+                "password": password
             })
         })
-        .then(response => {
-            return response.json()
-        })
-        .then(data => {
-            localStorage.setItem('token', data.token)
-            if (!data.token) {
-                alert("erreur") 
-            } else {
-                location.href = "./index.html"
-            }
-        })
+            .then(response => {
+                return response.json()
+            })
+            .then(data => {
+                localStorage.setItem('token', data.token)
+                if (!data.token) {
+                    alert("erreur")
+                } else {
+                    location.href = "./index.html"
+                }
+            })
     }
 })
 

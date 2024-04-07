@@ -1,53 +1,57 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
 	<meta charset="UTF-8">
 	<title>Sophie Bluel - Architecte d'intérieur</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap"
+		rel="stylesheet">
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
 </head>
+
 <body>
-<header>
-	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
-	<nav>
-		<ul>
-			<li><a href = "index.html">projets</a></li>
-			<li>contact</li>
-			<li><a href="login.html">login</a></li>
-			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
-		</ul>
-	</nav>
-</header>
-<main>
-    <section class="login__space">
-        <h2 class="login__space__title">Log In</h2>
+	<header>
+		<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
+		<nav>
+			<ul>
+				<li><a href="index.html">projets</a></li>
+				<li>contact</li>
+				<li><a href="login.html">login</a></li>
+				<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
+			</ul>
+		</nav>
+	</header>
+	<main>
+		<section class="login__space">
+			<h2 class="login__space__title">Log In</h2>
 
-        <form id="loginForm" class="login__form" method="post" action="">
-            <label for="input__mail" class="login__form__label">E-mail</label>
-            <input type="email" id="input__mail" class="login__form__input" value="sophie.bluel@test.tld">
-			<p id="inputEmailErrors">E-mail incorrect</p>
+			<form id="loginForm" class="login__form" method="post" action="">
+				<label for="input__mail" class="login__form__label">E-mail</label>
+				<input type="email" id="input__mail" class="login__form__input" value="sophie.bluel@test.tld">
+				
 
-            <label for="input__password" class="login__form__label">Mot de passe</label>
-            <input type="password" id="input__password" class="login__form__input" value="S0phie">
-			<p id="inputPasswordErrors">Mot de passe incorrect</p>
+				<label for="input__password" class="login__form__label">Mot de passe</label>
+				<input type="password" id="input__password" class="login__form__input" value="S0phie">
+				<p id="inputPasswordEmailErrors">Les identifiants sont incorrects</p>
 
-            <input type="submit" value="Se connecter" class="input__form__send">
-        </form>
+				<input type="submit" value="Se connecter" class="input__form__send">
+			</form>
 
-        <a href="#" class="login__form__text">Mot de passe oublié</a>
-    </section>
-</main>
-<footer>
-	<nav>
-		<ul>
-			<li>Mentions Légales</li>
-		</ul>
-	</nav>
-</footer>
-<script src="./assets/js/login.js"></script>
+			<a href="#" class="login__form__text">Mot de passe oublié</a>
+		</section>
+	</main>
+	<footer>
+		<nav>
+			<ul>
+				<li>Mentions Légales</li>
+			</ul>
+		</nav>
+	</footer>
+	<script src="./assets/js/login.js"></script>
 </body>
+
 </html>

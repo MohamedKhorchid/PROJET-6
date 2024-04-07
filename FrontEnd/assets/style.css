@@ -418,7 +418,7 @@ footer {
 	margin-bottom: 90px;
 }
 
-#inputEmailErrors, #inputPasswordErrors {
+#inputPasswordEmailErrors {
 	color: red;
 	margin-top: -20px;
 }
@@ -502,13 +502,13 @@ footer {
 	position: absolute;
 	top: 150px;
 	left: 110px;
+	display: flex;
+	justify-content: center;
 }
 
-.fa-image {
-	color: #B9C5CC;
-	position: absolute;
-	top: 40px;
-	left: 190px;
+#output {
+	width: 80px;
+	height: 80px;
 }
 
 .input__load__image {
@@ -614,4 +614,14 @@ footer {
 
 .fa-trash-can {
 	color: white;
+}
+
+.modal__content::before {
+	content: "";
+	width: calc(100% - 230px);
+	height: 1px;
+	background-color: #3D3D3D;
+	position: absolute;
+	bottom: 125px;
+	left: 120px;
 }
