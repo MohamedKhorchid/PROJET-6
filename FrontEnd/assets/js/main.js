@@ -38,8 +38,6 @@ function createFigureArray(works) {
 
 
 ////////////////////////////////////////////////////////////RECUPERATION DIV DES FILTRES//////////////////////
-/*const categoriesDiv = document.createElement ('div')
-categoriesDiv.classList.add('categoriex')*/
 const categoriesDiv = document.querySelector('.categories');
 
 
@@ -73,10 +71,10 @@ function createFilters(filter) {
             .then((data) => {
                 data.forEach((work) => {
 
-                    //const buttonFilterId = buttonFilter.getAttribute("id"); // id_A du bouton catégorie
-                    const figureCategoryId = work.categoryId; // id_B du projet dans la boucle foreach
+                    
+                    const figureCategoryId = work.categoryId; 
 
-                    if (filter.id === figureCategoryId) { // si id_A === id_B alors on créer l'affichage du projet
+                    if (filter.id === figureCategoryId) { 
                         const figure = createFigureArray(work);
                         portfolioGallery.appendChild(figure);
                     }

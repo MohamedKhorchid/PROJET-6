@@ -1,144 +1,104 @@
-const gallery = document.querySelector(".gallery")
+//////////////////////////////////////RECUPERATION DES TRAVAUX DE L'ARCHITECTE///////////////////////////////
+//cette variable permet de récupérer la div gallery que l'on a déjà en HTML
+const portfolioGallery = document.querySelector(".gallery");
 
-/**Cette fonction permet de créer la structure d'une figure et d'en faire un enfant de la galerie
-*/
+
+/*cette fonction permet de créer le tableau en utilisant les valeurs que l'on a récupéré avec fetch(), 
+en se basant sur la structure initiale qu'on avait en HTML*/
 function createFigureArray(works) {
-    const figure = document.createElement("figure")
-    const figCaption = document.createElement("figcaption")
-    const figImage = document.createElement("img")
+    //déclaration de variables qui ne pourront être utilisées que dans la fonction
+    const figure = document.createElement("figure");//création de la balise figure qui contiendra l'image et le sous-titre
 
-    figImage.setAttribute("src", works.imageUrl)
-    figImage.setAttribute("alt", works.title)
-    figCaption.innerHTML = works.title
-    figure.setAttribute("data-id", works.id)
-    figure.setAttribute("category-id", works.categoryId)
-    figure.classList.add("figure__project")
+    /*
+figure.innerHTML = `
+    <img src="${works.imageUrl}" alt="${works.title}" />
+    <figcaption>Mon nom</figcaption>    
+`
+*/
 
-    figure.appendChild(figImage)
-    figure.appendChild(figCaption)
+    const figCaption = document.createElement("figcaption");//création de la balise figcaption qui contiendra le sous-titre
+    const figImage = document.createElement("img");//création de la balise img qui contiendra les images
 
-    gallery.appendChild(figure)
+    figImage.setAttribute("src", works.imageUrl);//création d'un attribut source pour chaque image, 
+    figImage.setAttribute("alt", works.title);//création d'un attribut alt pour chaque image
+    figCaption.innerHTML = works.title;//création du texte sous-titre des photos
+    figure.setAttribute("data-id", works.id);//création d'un attribut data-id pour chaque figure
+    figure.setAttribute("category-id", works.categoryId);//création d'un attribut category-id pour chaque figure
+    figure.classList.add("figure__project");
 
-    return figure
+    figure.appendChild(figImage);//placement de l'image comme premier enfant de la balise figure
+    figure.appendChild(figCaption);//placement de la description comme deuxième enfants de la balise figure
+
+    return figure;//affiche la balise figure sous sa forme finale, une fois complétée
 }
 
 
-/**Cette fonction lance le fetch pour récupérer les projets de l'API et lance la fonction de création d'une figure pour chaque projet
- * récupéré
- */
-function fetchProjectsFromApi() {
-    fetch("http://localhost:5678/api/works")
-    .then(response => response.json())
-    .then((data) => {
-        data.forEach(works => {
-            createFigureArray(works)
+//fetch permet de récuprer les travaux de l'architecte
+fetch("http://localhost:5678/api/works")//lien vers l'emplacement des travaux en back-end via l'API
+    .then((response) => response.json())//après récupération, on précise la nature de la réponse reçue
+    .then((data) => { //ensuite on indique quoi faire des données
+        data.forEach((works) => { //pour chaque données, lancer la fonction "works" qui lance les instructions suivantes :
+            const figure = createFigureArray(works);// récupérer la balise figure que l'on a crée plus haut
+            portfolioGallery.appendChild(figure);// ajouter cette balise en tant qu'enfant de la div gallery
         });
     })
-}
-
-fetchProjectsFromApi()
+    .catch((error) => console.log("erreur"));//autrement, afficher une erreur
 
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////CREATION DIV DES FILTRES//////////////////////
+const categoriesDiv = document.querySelector('.categories');
 
 
-const divCategories = document.querySelector(".categories")
+//////////////////////CREATION DES FILTRES POUR TRIER LES TRAVAUX DE L'ARCHITECTE/////////////////
+function createFilters(filter) {
 
-/**Cette fonction créé la structure des boutons de filtres puis, au clic sur un bouton, on lance un fetch pour récupérer les projets de
- * l'API.
- * On utilise une condition : pour chaque projet récupéré, on compare la catégorie d'id du projet à celle du bouton, et si les valeurs
- * sont exactement égales, on lance la focntion qui créé une figure
- */
-function createFilter(filter) {
-    const buttonFilter = document.createElement("button")
-    buttonFilter.classList.add("categories__filter__style")
-    buttonFilter.setAttribute("id", filter.id)
-    buttonFilter.innerHTML = filter.name 
+    const buttonFilter = document.createElement("button");
+    buttonFilter.classList.add("categories__filter__style");
+    buttonFilter.setAttribute("id", filter.id);
+    buttonFilter.innerHTML = filter.name;
 
-    divCategories.appendChild(buttonFilter)
+    categoriesDiv.appendChild(buttonFilter);
 
-    buttonFilter.addEventListener("click", function () {
+    buttonFilter.addEventListener("click", function() {
         fetch("http://localhost:5678/api/works")
-        .then(response => response.json())
-        .then((data) => {
-            data.forEach(works => {
-                const figureCategoryId = works.categoryId
-
-                if(figureCategoryId === filter.id) {
-                    createFigureArray(works)
-                }
+            .then((response) => response.json())
+            .then((data) => {
+                data.forEach((works) => {
+                    const figure = createFigureArray(works);
+                    portfolioGallery.appendChild(figure);
+                });
             })
-        })
-        .catch(error => console.log(error))
+            .catch((error) => console.log("erreur"));
+        
+        portfolioGallery.innerHTML = "";
+        
+        const figure = document.querySelector(".figure__project");
 
-        gallery.innerHTML = "" 
+        const figureCatId = figure.getAttribute("category-id");
+        
+
+
     })
+    
+    return buttonFilter;
 }
 
-/**Cette fonction récupère les catégories de l'API et lance pour chacune la fonction permettant de créer un bouton
-*/
-function fetchCategoriesFromApi() {
-    fetch("http://localhost:5678/api/categories")
-    .then(response => response.json())
+//fetch permet de récupérer les catégories pour trier les travaux de l'architecte
+fetch("http://localhost:5678/api/categories")
+    .then((response) => response.json())
     .then((categories) => {
-        categories.forEach(filter => {
-            createFilter(filter)
-        })
+        categories.forEach((filter) => {
+            createFilters(filter);
+        });
     })
-}
-
-fetchCategoriesFromApi()
+    .catch((error) => console.log("erreur"));
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-/**Cette focntion créé un bouton "tous" qui lance le fetch permettant d'afficher tous les projets au clic
-*/
-function showAll() {
-    const allButtonFilter = document.createElement("button")
-    allButtonFilter.classList.add("categories__filter__style")
-    allButtonFilter.innerHTML = "Tous"
-    divCategories.appendChild(allButtonFilter)
-
-    allButtonFilter.addEventListener("click", function () {
-        fetchProjectsFromApi()
-        gallery.innerHTML = ""
-    })
-}
-
-showAll()
-
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-const getToken = localStorage.getItem("token")
-const loginButton = document.querySelector(".login__button")
-const buttonModalProjectsBox = document.querySelector(".btn__modal__projects__box")
-const portfolioH2 = document.querySelector("#portfolio h2")
-
-if(getToken) {
-    const openModalButton = document.createElement("button")
-    openModalButton.classList.add("open__modal__button")
-    openModalButton.innerHTML = 
-        `<span class="admin__edition__access">
-            <i class="fa-regular fa-pen-to-square"></i>
-            Mode édition
-        </span>`
-    buttonModalProjectsBox.appendChild(openModalButton)
-
-
-    const openModalSpan = document.createElement("span")
-    openModalSpan.classList.add("admin__modal__acess")
-    openModalSpan.innerHTML = 
-        `<i class="fa-regular fa-pen-to-square fa-square-h2"></i>
-        Modifier`
-    portfolioH2.appendChild(openModalSpan)
-
-
-    loginButton.innerHTML = "logout"
-    loginButton.addEventListener("click", function () {
-        localStorage.removeItem("token")
-    })
-}
+    /**
+     * Quand je clique sur un bouton de filtre : 
+     * --- Je vais chercher toutes les projets 
+     * --- Je les parcours et ne garde que ceux qui on le bon categoryId
+     * --- J'affiche tous les projets que j'ai sélectionné (bien penser à réinitialiser la div gallery => portfolioGallery.innerHTML = '')
+     */

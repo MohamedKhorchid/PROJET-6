@@ -45,7 +45,7 @@ formLogin.addEventListener('submit', (event) => {
             .then(data => {
                 localStorage.setItem('token', data.token)
                 if (!data.token) {
-                    alert("erreur")
+                    errorPasswordEmailErrors.style.visibility = "visible"
                 } else {
                     location.href = "./index.html"
                 }
