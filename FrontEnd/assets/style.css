@@ -460,13 +460,20 @@ footer {
 	right: 10px;
 }
 
+.modal__empty__file {
+	position: absolute;
+	top: 120px;
+	left: 225px;
+	color: red;
+}
+
 .modal__title {
 	color: black;
 	font-family: 'work sans';
 	font-weight: 500;
 	position: absolute;
 	top: 60px;
-	left: 220px;
+	left: 240px;
 }
 
 .next__modal__btn {

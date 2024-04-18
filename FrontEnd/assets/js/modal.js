@@ -136,6 +136,7 @@ function createFormModal() {
         <button class="modal__close__btn" id="btnModalClose"><i class ="fa-solid fa-xmark"></i></button>
         <button class="previous__modal__btn" id="btnPreviousModal"><i class="fa-solid fa-arrow-left fa-xl"></i></button>
         <h2 class="modal__title">Ajout photo</h2>
+        <p class="modal__empty__file">Les champs sont manquants</p>
         <div class="project__preview">
 
             <img src="../FrontEnd/assets/images/picture-svgrepo-com 1.jpg" id="output"/>
@@ -162,6 +163,9 @@ function createFormModal() {
     document.body.append(modal)
 
 
+    const modalEmptyFile = document.querySelector(".modal__empty__file")
+    modalEmptyFile.style.visibility = "hidden"
+
     const btnClose = document.querySelector('#btnModalClose')
     btnClose.addEventListener('click', () => {
         modal.remove();
@@ -180,6 +184,7 @@ function createFormModal() {
         const projectTitle = document.querySelector(".modal__form__input")
         const projectTitleValue = projectTitle.value
 
+
         const projectCategory = document.querySelector(".select__category")
         const projectCategoryValue = projectCategory.value
 
@@ -193,7 +198,25 @@ function createFormModal() {
         formData.append("category", projectCategoryValue)
         formData.append("image", projectImageValue)
 
-        fetch("http://localhost:5678/api/works", {
+        let emptyFile = false
+
+        if(projectTitleValue === "") {
+            emptyFile = true
+            modalEmptyFile.style.visibility = "visible"
+        }
+
+        if(projectCategoryValue === "") {
+            emptyFile = true
+            modalEmptyFile.style.visibility = "visible"
+        }
+
+        if(projectImageValue === "") {
+            emptyFile = true
+            modalEmptyFile.style.visibility = "visible"
+        }
+
+        if(!emptyFile) {
+            fetch("http://localhost:5678/api/works", {
                 method: "POST",
                 headers: {
                     "Authorization": `Bearer ${token}`,
@@ -210,11 +233,8 @@ function createFormModal() {
             .catch(error => {
                 console.log("erreur", error);
             })
+        }
 
     })
 
 }
-
-
-
-
