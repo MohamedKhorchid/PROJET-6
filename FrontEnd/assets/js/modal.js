@@ -51,18 +51,12 @@ function fillModalWithProjects() {
                             "Authorization": `Bearer ${token}`
                         }
                     })
-                        .then(response => response.json())
-                        .then(data => {
+                        .then(response => {
+                            const homeThumbnail = document.querySelector(`.figure__project[data-id="${work.id}"]`)
+                            homeThumbnail.remove()
 
-                            // Supprimer la vignette sur la 1ère modal 
-                            const vignette = document.querySelector(`.modal__figure[data-id="${work.id}"]`)
-                            vignette.remove()
-
-                            // Supprimer la vignette sur la modal d'accueil
-                            const vignetteHome = document.querySelector(`.figure__project[data-id="${work.id}"]`)
-                            vignetteHome.remove()
-
-                            console.log("élément supprimé avec succès", data);
+                            const modalThumbnail = document.querySelector(`.modal__figure[data-id="${work.id}"]`)
+                            modalThumbnail.remove()
                         })
                         .catch(error => {
                             console.log(error);
