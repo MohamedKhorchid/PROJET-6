@@ -53,6 +53,15 @@ function fillModalWithProjects() {
                     })
                         .then(response => response.json())
                         .then(data => {
+
+                            // Supprimer la vignette sur la 1ère modal 
+                            const vignette = document.querySelector(`.modal__figure[data-id="${work.id}"]`)
+                            vignette.remove()
+
+                            // Supprimer la vignette sur la modal d'accueil
+                            const vignetteHome = document.querySelector(`.figure__project[data-id="${work.id}"]`)
+                            vignetteHome.remove()
+
                             console.log("élément supprimé avec succès", data);
                         })
                         .catch(error => {
@@ -139,7 +148,7 @@ function createFormModal() {
         <p class="modal__empty__file">Les champs sont manquants</p>
         <div class="project__preview">
 
-            <img src="../FrontEnd/assets/images/picture-svgrepo-com 1.jpg" id="output"/>
+            <img src="./assets/images/picture-svgrepo-com 1.jpg" id="output"/>
             <input type="file" accept="image/*" id="load__image" class="input__load__image" onchange="loadFile(event)">
             <label for="load__image" class="modal__input__text">+ Ajouter photo </label>
             <p class="modal__input__size">jpg, png : 4mo max </p>
@@ -226,9 +235,15 @@ function createFormModal() {
             })
             .then((response => response.json()))
             .then(works => {
+
+                // Ajout sur la page d'accueil <QUE SI la catégorie du projet est celle affichée sur l'accueil>
                 const createFigure = createFigureArray(works)
                 const portfolioGallery = document.querySelector(".gallery")
                 portfolioGallery.appendChild(createFigure)
+
+                // Fermer la modalForm et ouvrir la première modal
+                modal.remove()
+                createProjectsModal()
             })
             .catch(error => {
                 console.log("erreur", error);
